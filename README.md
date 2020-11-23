@@ -121,5 +121,85 @@ kube-system   docker-registry   registry.local   192.168.99.101   80, 443   6m49
 
 ```
 
-### Go to http://gitlab and configure GitLab (groups, k8s clusters, etc)
+### Go to http://gitlab and configure GitLab (groups, k8s clusters, etc.)
 
+Example: Integrate GitLab with minikube k8s cluster running locally on your laptop (minikube where GitLab is deployed):
+
+```
+
+$ kubectl cluster-info | grep 'Kubernetes master' | awk '/http/ {print $NF}'
+https://192.168.99.101:8443
+
+$ kubectl get secret $(kubectl get secret | grep default-token | awk '{print $1}') -o jsonpath="{['data']['ca\.crt']}" | base64 --decode
+-----BEGIN CERTIFICATE-----
+MIIC5zCCAc+gAwIBAgIBATANBgkqhkiG9w0BAQsFADAVMRMwEQYDVQQDEwptaW5p
+a3ViZUNBMB4XDTIwMTExNjIzMTQ0MFoXDTMwMTExNTIzMTQ0MFowFTETMBEGA1UE
+AxMKbWluaWt1YmVDQTCCASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBAOjO
+8JnDb7xLQ8UNGeQ81V8AWeuLOvuM9Bf45cY95pIllsOajPZeihSKbwyIGlewonrq
+cT6a1temY3/xz5kvQIXoAnhTcpRpBr+ABrDr7OlJV8auSavkBj3XIBl80qycHY2H
+slwPzX3u45bvhFwUnuUbRuFboLc4XTTRumN/V64iWIor7mkZEXNq1dBrLLdd51o9
+U61DNOIfhMXOnusJDA8sxcIerxyzoFMysJghId6yDg2AUHIIBqCtEWmJMdDlxyBc
+x3cREwqLDkez2+w1+cHazoVRPDhiPkN+28+tVKPZ9p4zKdwLdkQ+YccA0+LHP0VM
+AiN71ObiJB1wwGeUKlMCAwEAAaNCMEAwDgYDVR0PAQH/BAQDAgKkMB0GA1UdJQQW
+MBQGCCsGAQUFBwMCBggrBgEFBQcDATAPBgNVHRMBAf8EBTADAQH/MA0GCSqGSIb3
+DQEBCwUAA4IBAQBptuv1zpxDGo4iik+rRgI49TpldkCBLuYnM100ZcudmQKCd4xv
+bFpyZivNd/DgfCg0JgI6O4Ousz97MqjkgY8itdMsmiaPYKbBjwFMOL2Ly38t8PVA
+U0ErF2R+aoTo6NjQJzqt/jCPOgIUGJv73S/9ajl9z0/bOHwQl0qz78OQkaRfg/Wv
+feZW0kLi8+d4EyNIrF57jLuwxpyAwUC5oySkj0IZZYf8qeq6Y7o0i07c9RrpNDl6
+r2jFQm0MsJZB8egFZSEMPwPhdj0zdIdv29YezNli8AuDa+7+u7/i9exncmiHR8r7
+Gn1ytp/St1cV1OGnrVgK1gk0Mz4FRuC9/03v
+-----END CERTIFICATE-----
+
+$ cd k8s/utils
+$ kubectl create -f gitlab-admin-service-account.yaml 
+serviceaccount/gitlab created
+clusterrolebinding.rbac.authorization.k8s.io/gitlab-admin created  
+
+$ kubectl -n kube-system describe secret $(kubectl -n kube-system get secret | grep gitlab | awk '{print $1}')
+Name:         gitlab-token-mhmjq
+Namespace:    kube-system
+Labels:       <none>
+Annotations:  kubernetes.io/service-account.name: gitlab
+              kubernetes.io/service-account.uid: 8f0ad85c-df9b-433f-8653-2ba3605e2106
+
+Type:  kubernetes.io/service-account-token
+
+Data
+====
+ca.crt:     1066 bytes
+namespace:  11 bytes
+token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IkVJcXRVMlhWa3FxZTFPVXZIVnBGWF81UEpKVVYyOWdFNUx4SVNHdnZQTHcifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJnaXRsYWItdG9rZW4tbWhtanEiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZ2l0bGFiIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiOGYwYWQ4NWMtZGY5Yi00MzNmLTg2NTMtMmJhMzYwNWUyMTA2Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmdpdGxhYiJ9.W5VFKmL0GwJpKfxWHo-PDC0CdwRS4G6CZZjc5AGGHq8I1zEnGkiu_-JgHGTqCaB6PAnebAIowxX8bfmsGu9T0A7inlSYIvt36MYshb4-r0hP59NH4cFn3hPrrVB6NCwYPMYlVGy81br3EqJqYQ2SvADKYbf-j4dbAHh0ybmJId2euyuDfBBOpyzE99V5wW0OlTxRQgHGcR0wmvfsxKEw566kvjP4LlfRjRQQxiWYIE_WU5if1gVQvFa0Slfa_CrdQ3zj2iT5qYADKRG45QCkMJjf0STJL9ifPkax3THuU6BlU2rXjP2G5qwHcteM3i968KnUGF-9QDZMZcuxY6R8_g
+```
+Open http://gitlab/ -> create group, and integrate group k8s minikube cluster providing above: API URL (https://192.168.99.102:8443), CA Certificate and Service Token. Install Helm, GitLab Runner, etc.
+
+Note: GitLab can be integrated (Add existing k8s cluster) with kubernetes versions < v1.18
+
+GitLab supports (october.2020) the following Kubernetes versions (check suported versions: https://docs.gitlab.com/ee/user/project/clusters/), and you can upgrade your Kubernetes version to any supported version at any time:
+```
+1.17
+1.16
+1.15
+1.14 (deprecated, support ends on December 22, 2020)
+1.13 (deprecated, support ends on November 22, 2020)
+```
+The helm tiller can't be installed in kubernetes v1.18.+ because is not supported Gitlab versions (helm tiller install issue, and helm is needed for all the other GitLab sub apps depend on Helm Tiller: you cannot use cert manager, ingress, etc.) :
+
+```
+$ kubectl get pod -n gitlab-managed-apps
+NAME           READY   STATUS   RESTARTS   AGE
+install-helm   0/1     Error    0          18h
+$ kubectl logs install-helm -n gitlab-managed-apps
++ helm init --tiller-tls --tiller-tls-verify --tls-ca-cert /data/helm/helm/config/ca.pem --tiller-tls-cert /data/helm/helm/config/cert.pem --tiller-tls-key /data/helm/helm/config/key.pem --service-account tiller
+Creating /root/.helm 
+Creating /root/.helm/repository 
+Creating /root/.helm/repository/cache 
+Creating /root/.helm/repository/local 
+Creating /root/.helm/plugins 
+Creating /root/.helm/starters 
+Creating /root/.helm/cache/archive 
+Creating /root/.helm/repository/repositories.yaml 
+Adding stable repo with URL: https://kubernetes-charts.storage.googleapis.com 
+Adding local repo with URL: http://127.0.0.1:8879/charts 
+$HELM_HOME has been configured at /root/.helm.
+Error: error installing: the server could not find the requested resource
+```

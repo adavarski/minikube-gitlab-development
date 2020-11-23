@@ -2,7 +2,7 @@
 
 ### Install minikube and kubectl
 
-Note:the same k8s minor versions for minikube k8s cluster and kubectl (v1.16.2 for example)
+Note: install the same k8s minor versions for minikube k8s cluster and kubectl (v1.16.2 for example)
 
 ```
 $ curl -Lo minikube https://github.com/kubernetes/minikube/releases/download/v1.5.2/minikube-linux-amd64 && chmod +x minikube && sudo mv ./minikube /usr/local/bin/

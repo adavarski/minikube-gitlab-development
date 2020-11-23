@@ -176,6 +176,10 @@ token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IkVJcXRVMlhWa3FxZTFPVXZIVnBGWF81UEpKVVYy
 ```
 Open http://gitlab/ -> create group, and integrate group k8s minikube cluster providing above: API URL (https://192.168.99.102:8443), CA Certificate and Service Token. Install Helm, GitLab Runner, etc.
 
+<img src="https://raw.githubusercontent.com/adavarski/minikube-gitlab-development//main/pictures/gitlab-minikube-add-existing-cluster.png?raw=true" width="800">
+
+
+
 Note: GitLab can be integrated (Add existing k8s cluster) with kubernetes versions < v1.18
 
 GitLab supports (october.2020) the following Kubernetes versions (check suported versions: https://docs.gitlab.com/ee/user/project/clusters/), and you can upgrade your Kubernetes version to any supported version at any time:

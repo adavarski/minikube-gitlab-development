@@ -174,9 +174,11 @@ ca.crt:     1066 bytes
 namespace:  11 bytes
 token:      eyJhbGciOiJSUzI1NiIsImtpZCI6IkVJcXRVMlhWa3FxZTFPVXZIVnBGWF81UEpKVVYyOWdFNUx4SVNHdnZQTHcifQ.eyJpc3MiOiJrdWJlcm5ldGVzL3NlcnZpY2VhY2NvdW50Iiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9uYW1lc3BhY2UiOiJrdWJlLXN5c3RlbSIsImt1YmVybmV0ZXMuaW8vc2VydmljZWFjY291bnQvc2VjcmV0Lm5hbWUiOiJnaXRsYWItdG9rZW4tbWhtanEiLCJrdWJlcm5ldGVzLmlvL3NlcnZpY2VhY2NvdW50L3NlcnZpY2UtYWNjb3VudC5uYW1lIjoiZ2l0bGFiIiwia3ViZXJuZXRlcy5pby9zZXJ2aWNlYWNjb3VudC9zZXJ2aWNlLWFjY291bnQudWlkIjoiOGYwYWQ4NWMtZGY5Yi00MzNmLTg2NTMtMmJhMzYwNWUyMTA2Iiwic3ViIjoic3lzdGVtOnNlcnZpY2VhY2NvdW50Omt1YmUtc3lzdGVtOmdpdGxhYiJ9.W5VFKmL0GwJpKfxWHo-PDC0CdwRS4G6CZZjc5AGGHq8I1zEnGkiu_-JgHGTqCaB6PAnebAIowxX8bfmsGu9T0A7inlSYIvt36MYshb4-r0hP59NH4cFn3hPrrVB6NCwYPMYlVGy81br3EqJqYQ2SvADKYbf-j4dbAHh0ybmJId2euyuDfBBOpyzE99V5wW0OlTxRQgHGcR0wmvfsxKEw566kvjP4LlfRjRQQxiWYIE_WU5if1gVQvFa0Slfa_CrdQ3zj2iT5qYADKRG45QCkMJjf0STJL9ifPkax3THuU6BlU2rXjP2G5qwHcteM3i968KnUGF-9QDZMZcuxY6R8_g
 ```
-Open http://gitlab/ -> create group, and integrate group k8s minikube cluster providing above: API URL (https://192.168.99.102:8443), CA Certificate and Service Token. Install Helm, GitLab Runner, etc.
+Open http://gitlab/ -> create group, and integrate group k8s minikube cluster providing above: API URL (https://192.168.99.102:8443), CA Certificate and Service Token. Install Helm, GitLab Runner, etc. via GitLab Web UI.
 
 <img src="https://raw.githubusercontent.com/adavarski/minikube-gitlab-development//main/pictures/gitlab-minikube-add-existing-cluster.png?raw=true" width="800">
+
+<img src="https://raw.githubusercontent.com/adavarski/minikube-gitlab-development//main/pictures/gitlab-minikube-k8s-applications.png?raw=true" width="800">
 
 
 

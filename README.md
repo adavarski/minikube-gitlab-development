@@ -2,7 +2,7 @@
 
 <img src="https://raw.githubusercontent.com/adavarski/minikube-gitlab-development//main/pictures/devops-toolchain-cicd.png?raw=true" width="800">
 
-<img src="https://raw.githubusercontent.com/adavarski/minikube-gitlab-development//main/pictures/DevOps_Toolchain.png?raw=true" width="800">
+<img src="https://raw.githubusercontent.com/adavarski/minikube-gitlab-development//main/pictures/devops_toolchai-cicd-2.png?raw=true" width="800">
 
 
 ### Install minikube and kubectl

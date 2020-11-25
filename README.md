@@ -4,7 +4,6 @@
 
 <img src="https://raw.githubusercontent.com/adavarski/minikube-gitlab-development//main/pictures/devops_toolchai-cicd-2.png?raw=true" width="800">
 
-
 ### Install minikube and kubectl
 
 Note: install the same k8s minor versions for minikube k8s cluster and kubectl (v1.16.2 for example)
